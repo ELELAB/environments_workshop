@@ -86,7 +86,7 @@ just run:
 ```
 $ python brca_PCA.py
 ```
-If you have prepared the environment correctly, this should run the script and generate the `brca_pcs_py.png` without errors.
+If you have prepared the environment correctly, this should run the script and generate the `brca_pcs_py.png` without errors. Notice that the Python interpreter we are using is not the system-wide one, it is the one included in the environment.
 
 ### Deactivating the environment
 In order to deactivate the environment, just run `deactivate`:
@@ -106,5 +106,50 @@ pip install matplotlib==2.0.0
 - `pip uninstall packagename` does the opposite of `install` and removes packages from the environment. It has the same syntax. Notice that this command doesn't do any check on whether the package you are trying to remove is required by another; this means that other packages might stop working if you uninstall the wrong one. 
 - `pip check` checks the consistency of the environment, i.e. if all packages have all satisfied requirements. If not, `pip` will print messages that will help understand what packages are missing
 
+### Saving the state of your environment
+`pip` and virtualenv have a way to save the state of your repository (i.e. which packages are installed and their versions) so that each environment can
+
+ - be easily reconstructed from scratch, so one doesn't need to keep the environment around at all times
+ - be reconstructed by another researcher to reproduce your environment
+ - be more version-aware
+
+This is done by using the command `pip freeze`, which prints a list of all the installed packages and their versions:
+```
+$ pip freeze > requirements.txt
+```
+For instance, the content of the `requirements.txt` file for our example is:
+```
+cycler==0.11.0
+fonttools==4.29.1
+joblib==1.1.0
+kiwisolver==1.3.2
+matplotlib==3.5.1
+numpy==1.21.5
+packaging==21.3
+pandas==1.3.5
+Pillow==9.0.1
+pkg_resources==0.0.0
+pyparsing==3.0.7
+python-dateutil==2.8.2
+pytz==2021.3
+scikit-learn==1.0.2
+scipy==1.7.3
+six==1.16.0
+sklearn==0.0
+threadpoolctl==3.1.0
+```
+Notice that:
+- `requirements.txt` is the standard name for this type of environment file, however it can be called in any way 
+- the output includes both the packages you have installed explicitly as well as those that were installed as requirements of other packages
+- all the packages have version numbers, even though we did not require specific versions when they were installed
+- here the `requirements.txt` file was generated automatically, however you can create from scratch or edit by hand such a file, just [respecting the file format](https://pip.pypa.io/en/stable/cli/pip_install/#requirement-specifiers). For instance, Packages are not required to have an explicit version number (in that case the latest version is considered), or their version can be specified using other qualifiers such as `>=`, `>`, `<`... . It is also possible to explicitly require the installation of a package from a specific web resource, e.g. a GitHub repository, specifying the clone target and a commit ID (in case a specific commit is desired):
+ ```
+git+https://github.com/ELELAB/mutatex.git@44eed08c3b73a186abf702e7a53fd05a2d5568fe
+```
+
 ### Reproducing your environment
-There is a general mechanism to 
+With a `requirements.txt` files in hand, it is very easy to reproduce an environment. It can be done, in a new and clean environment, using a single command:
+```
+pip install -r requirements.txt
+```
+the environment can then be used as-is or modified as required.
