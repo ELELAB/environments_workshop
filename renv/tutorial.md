@@ -7,7 +7,7 @@ Following this tutorial requires:
 - A recent (3.6.2 or higher) working version of R and/or Rstudio
 - A working installation of the `renv` R package
 
-### Installing the `renv` Python package:
+### Installing the `renv` R package:
 You can simply install the `renv`R package from CRAN, as any other regular package:
 ```
 > install.packages('renv')
@@ -21,22 +21,25 @@ library(renv)
 
 Here we will use the `renv` R package to create an environment that will allow you to run a simple R script called `brca_PCA.R`. This script uses a similar dataset as the one used in the previous example, which actually comes from the same source and which is available in the `mlbench` R package. The script loads the data, performs PCA as for the previous example and writes a scatter plot showing the projection of the samples on the first two principal components (`brca_pcs_R.png`). Please notice that the Python and R datasets are not identical for number of samples and features, meaning that you shouldn't expect exactly the same result (even though they should be reasonably similar). We will see how to build an environment that is able to run this script and install the prerequisites. Running the script requires:
  - R/Rstudio >= 3.6.2
- - The `renv` R package
+ - the `mlbench`, `factoextra` R packages
 
 ### Preparing for the tutorial
 In order to download the script you can just clone the course's GitHub repository and enter the `virtualenv` directory:
 ```
-git clone https://github....
-cd whatever/renv
+git clone https://github.com/ELELAB/environments_workshop.git 
+cd environments_workshop/renv/brca_PCA
 ```
- where you'll find the `brca_PCA.R` script. You need to set this directory as your working directory: 
- ```
- setwd(.../whatever/renv)
- ```
- 
+where you'll find the `brca_PCA.R` script. Read the content of the `brca_PCA.R` script and take note of what R packages are being imported
+
+Open R or Rstudio. You will need to set this directory as your working directory if it's not already: 
+```
+setwd(/data/user/teo/environments_workshop/renv/brca_PCA)
+```
+
 ### Initializing your environment
-In order to create a new environment, just run 
+In order to create a new environment, just run in R/Rstudio:
 ```
+library(renv)
 renv::init()
 ```
 the package will warn you it's about to create some files and directories. Read the warning and ultimately accept. Restart the R session if it was not done automatically (it usually is). Your environment is ready. You will notice that you no longer have access to R libraries you have installed system-wide - meaning your environment is isolated.
@@ -59,7 +62,7 @@ We will now try and run the script again from a fresh RStudio session. This will
 
 By default, when you run Rstudio, no environment is active. In order to activate your recently created environment, you need to change the working directory to the one you desire:
  ```
-setwd(.../whatever/renv)
+setwd(/data/user/teo/environments_workshop/renv)
 ```
 and then run
 ```
@@ -75,11 +78,17 @@ Notice that if you run your R/Rstudio session *starting from your project direct
 
 ### Modifying your environment
 
-Once your environment is created, it will stay the same unless you specifically ask for it to be updated. First of all, modify your `brca_PCA.R` script by adding a `library` statement for a different package that is not loaded yet (for instance, `ggbiplot`) and save it. Then, you can updated your environment by running:
+Once your environment is created, it will stay the same unless you specifically ask for it to be updated. First of all, modify your `brca_PCA.R` script by adding a `library` statement for a different package that is not loaded yet (for instance, `Biostrings`, a Bioconductor package) and save it. Then, you can install it by using either the usual `BiocManager::install` or the more convenient `renv::install()` function:
+```
+renv::install('bioc::Biostrings')
+```
+here notice the `bioc::` before the package name that signals `renv` that is in fact a Bioconductor package.
+We than save our environment by running:
+
 ```
 renv::snapshot()
 ```
-`renv` will once again check your R files and determine which of the installed requirements you need. Since we are loading a new package, your environment will be updated with it and its own set of required packages.
+This will write the changes in the environment to the lock file.
 
 Please notice that, by default, *only the packages that your R code loads will be saved in the environment*. If a package has been installed manually but isn't loaded by one of your R project files it will be not considered. This behaviour can be changed before running `snapshot` by changing a setting so that it saves *all* the installed packages:
 ```
@@ -101,9 +110,11 @@ Sharing your environment with other researchers is done by sharing some of the f
 You should share these files with other people that intend to reproduce the results of your project, e.g. by uploading them together to a GitHub repository together with the rest of it
 
 ### Reproducing someone else's environment
-In order to do this you should have received someone's project (i.e. code) and their environment `env.lock` file. We have provided an example of this in the course data (the `dplyr` directory inside `env`). First change your current working directory to the `dplyr` project folder:
+In order to do this you should have received someone's project (i.e. code) and their environment `renv.lock` file. We have provided an example of this in the course data (the `dplyr` directory inside `env`). 
+
+First restart your R session. Change your current working directory to the `dplyr` project folder:
 ```
-setwd(...)
+setwd(/data/user/teo/environments_workshop/renv/dplyr)
 ```
 This means that the project files and the `renv.lock` are in the project folder. Then run:
 ```
