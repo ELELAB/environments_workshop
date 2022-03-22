@@ -5,7 +5,7 @@
 Following this tutorial requires:
 
 - Access to a Linux terminal (e.g. on your computer, through `ssh`, or using the Windows Subsystem for Linux)
- - A working installation of Python, 2.7+
+ - A working installation of Python, >=2.7
  - Having the `virtualenv` package installed in your Python distribution. 
 
 ### Installing the `virtualenv` Python package:
@@ -38,8 +38,8 @@ Here we will use the `virtualenv` package to create an environment that will all
 ### Preparing for the tutorial
 In order to download the script you can just clone the course's GitHub repository and enter the `virtualenv` directory:
 ```
-git clone https://github....
-cd whatever/virtualenv
+git clone https://github.com/ELELAB/environments_workshop.git
+cd environments_workshop/virtualenv
 ```
  where you'll find the `brca_PCA.py` script.
 
@@ -146,10 +146,25 @@ Notice that:
  ```
 git+https://github.com/ELELAB/mutatex.git@44eed08c3b73a186abf702e7a53fd05a2d5568fe
 ```
+### Deactivating your environment
+In order to deactivate your environment you just need to run:
+```
+$ deactivate
+```
 
 ### Reproducing your environment
-With a `requirements.txt` files in hand, it is very easy to reproduce an environment. It can be done, in a new and clean environment, using a single command:
+With a `requirements.txt` files in hand, it is very easy to reproduce an environment. It can be done, in a new and clean environment, using a single command. For instance, you can deactivate and remove your environment:
+
 ```
-pip install -r requirements.txt
+$ deactivate
+$ rm -rf env
+```
+
+and then re-create it just by :
+
+```
+$ virtualenv -p python3.7 env
+$ source env/bin/activate
+$ pip install -r requirements.txt
 ```
 the environment can then be used as-is or modified as required.
