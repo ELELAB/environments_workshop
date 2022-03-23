@@ -50,13 +50,6 @@ $ virtualenv -p python3.7 env
 ```
 This creates a `env` folder in the current directory which contains the virtual environment, call `env`. Virtual environments can have any name. The option `-p` allows to specify which Python version or executable the environment should use. If nothing is specified, it uses the system default. *Notice that the Python version you intend to use must be already installed in your system.*
 
-### Creating an environment using virtualenv
-First we will create a Python virtual environment using `virtualenv`:
-```
-$ virtualenv -p python3.7 env
-```
-This creates a `env` folder in the current directory which contains the virtual environment, call `env`. Virtual environments can have any name. The option `-p` allows to specify which Python version or executable the environment should use. If nothing is specified, it uses the system default. *Notice that the Python version you intend to use must be already installed in your system.*
-
 ### Activating the environment
 We then need to activate the environment we created:
 ```
@@ -87,13 +80,6 @@ just run:
 $ python brca_PCA.py
 ```
 If you have prepared the environment correctly, this should run the script and generate the `brca_pcs_py.png` without errors. Notice that the Python interpreter we are using is not the system-wide one, it is the one included in the environment.
-
-### Deactivating the environment
-In order to deactivate the environment, just run `deactivate`:
-```
-$ deactivate
-```
-Your environment will persist and be able to be used again
 
 ### `pip` commands, tips and tricks
 - If we need (which we don't in this case) we can also specify package versions when installing:
@@ -160,11 +146,16 @@ $ deactivate
 $ rm -rf env
 ```
 
-and then re-create it just by :
+and then re-create it just by recreating the environment and activating it:
 
 ```
 $ virtualenv -p python3.7 env
 $ source env/bin/activate
+```
+
+and finally installing all the requirements:
+
+```
 $ pip install -r requirements.txt
 ```
 the environment can then be used as-is or modified as required.
