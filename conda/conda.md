@@ -261,7 +261,7 @@ This command will remove all packages from the named environment before removing
 **Optionally**, we can use ```--name``` instead of ```--prefix```.
 
 ```
-$ conda create --name python3-env python=3.7
+conda create --name python3-env python=3.7
 ```
 
 This will create ```python3-env``` environment into /home/$USER/.conda/envs/
