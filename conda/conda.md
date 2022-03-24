@@ -53,9 +53,6 @@ To create a new environment for Python development using conda you can use the `
 
 **Preferably**, conda environment should be created in the **project folder** and using specific program/tool version (**if not specified, most recent version will be installed**):
 
-```
-conda create --prefix ./env python=3.7 #do not run
-```
 
 This makes it easy to tell if your project utilizes an isolated environment by including the environment as a sub-directory.
 **Makes your project more self-contained as everything including the required software is contained in a single project directory**.
@@ -65,7 +62,7 @@ An additional benefit of creating your project’s environment inside a sub-dire
 You can create a Conda environment and install multiple packages by listing the packages that you wish to install.
 
 ```
-conda create --prefix ./env python=3.7 matplotlib=3.5.1 pandas=1.3.5 scikit-learn=1.0.2
+conda create --prefix ./env matplotlib=3.5.1 pandas=1.3.5 scikit-learn=1.0.2
 ```
 
 When conda installs a package into an environment it also **installs all the required dependencies.** For example, even though Python is not listed as a package to install into the ```introduction-to-conda``` environment above, conda will still install Python into the environment because it is a required dependency of at least one of the listed packages.
@@ -141,8 +138,8 @@ Activate the environment ```env``` in ```conda-exercise-1``` project created in 
   <summary>Solution</summary>
   
     ```
-    conda activate ./conda-exercise-1/env
     cd ./conda-exercise-1
+    conda activate ./env
     python ../brca_PCA.py
     conda deactivate
     ```
@@ -162,8 +159,7 @@ conda activate ./introduction-to-conda/env
 conda install numpy
 ```
 
-If version numbers are not explicitly provided, Conda will **attempt to install the newest versions of any requested packages.** To accomplish this, **Conda may need to update some packages** that are already installed or install additional packages. It is always a **good idea to explicitly provide version numbers** when installing packages with the conda install command. For example, the following would install a particular version of Scikit-Learn, into the current, active environment.
-
+If version numbers are not explicitly provided, Conda will **attempt to install the newest versions of any requested packages.** To accomplish this, **Conda may need to update some packages** that are already installed or install additional packages. It is always a **good idea to explicitly provide version numbers** when installing packages with the conda install command. 
 ```
 conda install numpy=1.21.2 #do not run
 ```
@@ -172,16 +168,18 @@ conda install numpy=1.21.2 #do not run
 
 
 #### Exercise - Installing a package into a specific environment
-Dask provides advanced parallelism for data science workflows enabling performance at scale for the core Python data science tools such as Numpy, Pandas, and Scikit-Learn. Have a read through the official documentation for the conda install command and see if you can figure out how to install Dask into the ```conda-exercise-1``` project conda environment that you created in the previous challenge.
+Dask provides advanced parallelism for data science workflows enabling performance at scale for the core Python data science tools such as Numpy, Pandas, and Scikit-Learn. Try to install Dask into the ```conda-exercise-1``` project conda environment that you created in the previous challenge.
 
 <details>
   <summary>Solution</summary>
 
-    You could install ```dask=2022.2.1``` into conda-exercise-1 environment by first activating that environment and then using the conda install command.  
+    You could install "dask=2022.2.1" into conda-exercise-1 environment by first activating that environment and then using the conda install command.  
+    
     ```
     conda activate ./conda-exercise-1/env
     conda install dask=2022.2.1
-    ```
+    ``` 
+	
 </details>
 
 
@@ -195,7 +193,7 @@ mkdir ./r-project-dir
 cd ./r-project-dir
 ```
 
-Exercise - Create a new environment inside the newly created r-project-dir in a sub-directory called ```env``` and install ```r-base```, ```r-tidyverse``` and ```r-sparklyr```.
+Then, we create a new environment inside the newly created r-project-dir in a sub-directory called ```env``` and install ```r-base```, ```r-tidyverse``` and ```r-sparklyr```.
 
 ```
 conda create --prefix ./env r-base r-tidyverse r-sparklyr
@@ -250,7 +248,7 @@ conda remove --prefix r-project-dir/env --all
 In order to delete an entire environment you use the conda remove command as follows.  
     
 ```
-$ conda remove --prefix ./conda-exercise-1/env --all --yes
+conda remove --prefix ./r-project-dir/env --all --yes
 ```
 
 This command will remove all packages from the named environment before removing the environment itself. The use of the --yes flag short-circuits the confirmation prompt (and should be used with caution).
@@ -263,7 +261,7 @@ This command will remove all packages from the named environment before removing
 **Optionally**, we can use ```--name``` instead of ```--prefix```.
 
 ```
-$ conda create --name python3-env python=3.7
+conda create --name python3-env python=3.7
 ```
 
 This will create ```python3-env``` environment into /home/$USER/.conda/envs/
@@ -327,7 +325,6 @@ It may very well be the case that packages (or often more recent versions of pac
 
 ```conda-forge```: the ```conda-forge``` channel contains a **large number of community curated up-to-date conda packages**.  
 ```bioconda```: the ```bioconda``` channel also contains a **large number of Bioinformatics** curated ```conda``` packages. ```bioconda``` channel is meant to be used with ```conda-forge```, you should not worried about using the two channels when installing your prefered packages.  
-```pip```: only **if a package is not otherwise available** via ```conda-forge``` (or some domain-specific channel like ```bioconda```) should a package be installed into a conda environment from ```PyPI``` using ```pip```.
 
 For example ```bwa```, we can search for the package on the ```defaults``` channels but you will not find it!
 
@@ -342,12 +339,16 @@ conda search bwa --channel bioconda
 ```
 
 
-#### Exercise - Create a new project ```alignment-project``` with a local conda environment ```env``` and install newest ```bwa``` package from ```bioconda``` channel
+#### Exercise - Create a new project ```alignment-project``` with a local conda environment ```env``` and install newest ```bwa``` package from ```bioconda``` channel.  
+
 <details>
-  <summary>Solution</summary>. 
+  <summary>Solution</summary>
+	
+```	
 mkdir ./alignment-project  
 cd ./alignment-project  
 conda create --prefix ./env --channel bioconda bwa  
+```
 </details>
 
 ### A Python package isn’t available on any Conda channel! What should I do?
@@ -372,7 +373,7 @@ When working on a **collaborative research project** it is often the case that *
 
 In order to make sure that your **environment is truly shareable**, you need to make sure that the contents of your environment are described in such a way that the resulting environment file can be used to re-create your environment on Linux, Mac OS, and Windows. **Conda uses YAML** format **for writing its environment files**. YAML is a **human-readable** language that is commonly used for configuration files.
 
-Creating your project’s Conda environment from a single environment file is a **Conda “best practice”**. Not only do you have a file to share with collaborators but you also have a **file that can be placed under version control which further enhancing the reproducibility of your research project and workflow.**
+(Re-)Creating your project’s Conda environment from a single environment file is a **Conda “best practice”**. Not only do you have a file to share with collaborators but you also have a **file that can be placed under version control which further enhancing the reproducibility of your research project and workflow.**
 
 
 #### Default environment.yml file
@@ -556,6 +557,7 @@ dependencies:
   - scikit-learn=1.0.2
   - dask=2022.2.1
 ```
+	
 </details>
   
 You could use the following command, that will **rebuild the environment from scratch** with the new Dask dependencies:
@@ -566,7 +568,7 @@ conda env create --prefix ./env --file environment.yml --force
 Or, if you just want to **update the environment** in-place with the new Dask dependencies, you can use:
 
 ```
-$ conda env update --prefix ./env --file environment.yml  --prune
+conda env update --prefix ./env --file environment.yml  --prune
 ```
 
 
