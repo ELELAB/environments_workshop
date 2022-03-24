@@ -325,7 +325,6 @@ It may very well be the case that packages (or often more recent versions of pac
 
 ```conda-forge```: the ```conda-forge``` channel contains a **large number of community curated up-to-date conda packages**.  
 ```bioconda```: the ```bioconda``` channel also contains a **large number of Bioinformatics** curated ```conda``` packages. ```bioconda``` channel is meant to be used with ```conda-forge```, you should not worried about using the two channels when installing your prefered packages.  
-```pip```: only **if a package is not otherwise available** via ```conda-forge``` (or some domain-specific channel like ```bioconda```) should a package be installed into a conda environment from ```PyPI``` using ```pip```.
 
 For example ```bwa```, we can search for the package on the ```defaults``` channels but you will not find it!
 
